@@ -8,12 +8,15 @@ import (
 )
 
 var topWindow fyne.Window
+var screen fyne.Container
+var split *container.Split
+var application *fyne.App
 
 func main() {
-	a := app.NewWithID("io.kemo.openshiftnetwizard")
-	logLifecycle(a)
+	application := app.NewWithID("io.kemo.openshiftnetwizard")
+	logLifecycle(application)
 
-	w := a.NewWindow("OpenShift Network Wizard")
+	w := application.NewWindow("OpenShift Network Wizard")
 	topWindow = w
 	w.SetMaster()
 
@@ -23,7 +26,7 @@ func main() {
 	intro.Wrapping = fyne.TextWrapWord
 	setScreen := func(s Screen) {
 		if fyne.CurrentDevice().IsMobile() {
-			child := a.NewWindow(s.Title)
+			child := application.NewWindow(s.Title)
 			topWindow = child
 			child.SetContent(s.View(topWindow))
 			child.Show()
@@ -40,7 +43,6 @@ func main() {
 		content.Refresh()
 	}
 
-	//w.SetContent(widget.NewLabel("Hello World!"))
 	screen := container.NewBorder(
 		container.NewVBox(title, widget.NewSeparator(), intro), nil, nil, nil, content)
 	if fyne.CurrentDevice().IsMobile() {
